@@ -230,6 +230,7 @@ class TimedTextEditor extends React.Component {
       });
     }
 
+    console.log("setting state")
     this.setState({ editorState });
   }
 
@@ -255,6 +256,7 @@ class TimedTextEditor extends React.Component {
   * Update Editor content state
   */
   setEditorNewContentState = (newContentState) => {
+    console.log("setting new state")
     const newEditorState = EditorState.push(this.state.editorState, newContentState);
     this.setState({ editorState: newEditorState });
   }
@@ -426,6 +428,27 @@ class TimedTextEditor extends React.Component {
     // cover edge cases where it doesn't find it
     return { entityKey, isEndOfParagraph };
   }
+  
+
+  updateSpeakerName = (oldName, newName) => {
+    const contentToUpdate = convertToRaw(this.state.editorState.getCurrentContent());
+
+    contentToUpdate.blocks.forEach(block => {
+      if (block.data.speaker === oldName) {
+        block.data.speaker = newName;
+      }
+    })
+
+    this.setEditorContentState(contentToUpdate)
+
+    // const contentState = convertFromRaw(currentContent);
+    // // eslint-disable-next-line no-use-before-define
+    // const newEditorState = EditorState.createWithContent(contentState, decorator);
+    // this.setEditorNewContentState(newEditorState)
+
+    
+    // this.forceRenderDecorator()
+  }
 
   renderBlockWithTimecodes = () => {
     return {
@@ -438,7 +461,8 @@ class TimedTextEditor extends React.Component {
         editorState: this.state.editorState,
         setEditorNewContentState: this.setEditorNewContentState,
         onWordClick: this.props.onWordClick,
-        handleAnalyticsEvents: this.props.handleAnalyticsEvents
+        handleAnalyticsEvents: this.props.handleAnalyticsEvents,
+        updateSpeakerName: this.updateSpeakerName
       }
     };
   }

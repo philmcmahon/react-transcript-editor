@@ -35,7 +35,10 @@ class WrapperBlock extends React.Component {
   }
 
   handleOnClickEdit = () => {
+    const oldSpeakerName = this.state.speaker;
     const newSpeakerName = prompt('New Speaker Name?');
+
+    this.props.blockProps.updateSpeakerName(oldSpeakerName, newSpeakerName);
 
     if (newSpeakerName !== '' && newSpeakerName !== null) {
       this.setState({ speaker: newSpeakerName });
