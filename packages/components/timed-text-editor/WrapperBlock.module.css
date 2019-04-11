@@ -25,11 +25,11 @@
     color: color-mid-grey;
     font-weight: bold;
     text-transform: uppercase;
-    text-overflow: ellipsis;
+    text-overflow: wrap;
     overflow: hidden;
     white-space: nowrap;
     justify-self: start;
-    max-width: 100px;
+    max-width: 150px;
     text-align: left;
   }
 

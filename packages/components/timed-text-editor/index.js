@@ -230,7 +230,6 @@ class TimedTextEditor extends React.Component {
       });
     }
 
-    console.log("setting state")
     this.setState({ editorState });
   }
 
@@ -256,7 +255,6 @@ class TimedTextEditor extends React.Component {
   * Update Editor content state
   */
   setEditorNewContentState = (newContentState) => {
-    console.log("setting new state")
     const newEditorState = EditorState.push(this.state.editorState, newContentState);
     this.setState({ editorState: newEditorState });
   }
@@ -428,10 +426,9 @@ class TimedTextEditor extends React.Component {
     // cover edge cases where it doesn't find it
     return { entityKey, isEndOfParagraph };
   }
-  
 
-  updateSpeakerName = (oldName, newName) => {
-    const contentToUpdate = convertToRaw(this.state.editorState.getCurrentContent());
+  updateSpeakerName = (oldName, newName, state) => {
+    const contentToUpdate = convertToRaw(state);
 
     contentToUpdate.blocks.forEach(block => {
       if (block.data.speaker === oldName) {
@@ -439,15 +436,7 @@ class TimedTextEditor extends React.Component {
       }
     })
 
-    this.setEditorContentState(contentToUpdate)
-
-    // const contentState = convertFromRaw(currentContent);
-    // // eslint-disable-next-line no-use-before-define
-    // const newEditorState = EditorState.createWithContent(contentState, decorator);
-    // this.setEditorNewContentState(newEditorState)
-
-    
-    // this.forceRenderDecorator()
+    return convertFromRaw(contentToUpdate);
   }
 
   renderBlockWithTimecodes = () => {

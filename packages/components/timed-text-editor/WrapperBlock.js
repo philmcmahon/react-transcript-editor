@@ -16,7 +16,6 @@ class WrapperBlock extends React.Component {
     super(props);
 
     this.state = {
-      speaker: '',
       start: 0,
       timecodeOffset: this.props.blockProps.timecodeOffset
     };
@@ -24,21 +23,17 @@ class WrapperBlock extends React.Component {
 
   componentDidMount() {
     const { block } = this.props;
-    const speaker = block.getData().get('speaker');
 
     const start = block.getData().get('start');
 
     this.setState({
-      speaker: speaker,
       start: start
     });
   }
 
   handleOnClickEdit = () => {
-    const oldSpeakerName = this.state.speaker;
+    const oldSpeakerName = this.props.block.getData().get("speaker");
     const newSpeakerName = prompt('New Speaker Name?');
-
-    this.props.blockProps.updateSpeakerName(oldSpeakerName, newSpeakerName);
 
     if (newSpeakerName !== '' && newSpeakerName !== null) {
       this.setState({ speaker: newSpeakerName });
@@ -73,7 +68,9 @@ class WrapperBlock extends React.Component {
         newBlockDataWithSpeakerName
       );
 
-      this.props.blockProps.setEditorNewContentState(newContentState);
+      const newContentStateWithAllSpeakersUpdated = (this.props.blockProps.updateSpeakerName(oldSpeakerName, newSpeakerName, newContentState));
+
+      this.props.blockProps.setEditorNewContentState(newContentStateWithAllSpeakersUpdated);
     }
   }
 
@@ -97,7 +94,7 @@ class WrapperBlock extends React.Component {
     }
 
     const speakerElement = <SpeakerLabel
-      name={ this.state.speaker }
+      name={ this.props.block.getData().get("speaker") }
       handleOnClickEdit={ this.handleOnClickEdit }
     />;
 
